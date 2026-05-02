@@ -1,0 +1,30 @@
+{
+    "scan_path": "D:\\",
+    "max_depth": 2,
+    "exclude_dirs": [
+        "$RECYCLE.BIN",
+        "System Volume Information",
+        "node_modules",
+        ".venv",
+        "venv",
+        "__pycache__",
+        "Recovery",
+        "PerfLogs"
+    ],
+    "commit_messages": [
+        "📝 Update README with daily activity log",
+        "🔧 Refactor and improve documentation",
+        "📚 Update project documentation",
+        "✨ Daily maintenance update",
+        "🗓️ Scheduled documentation refresh",
+        "📋 Update project changelog",
+        "🛠️ Routine project update",
+        "📖 Enhance README content"
+    ],
+    "readme_update_template": "\n---\n\n> 🕐 Last updated: {date} | Auto-maintained by Git Auto Committer\n",
+    "auto_push": false,
+    "min_commits_per_day": 1,
+    "max_commits_per_day": 3,
+    "time_range_start": "09:00",
+    "time_range_end": "21:00"
+}
