@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from auto_committer import __version__
 from auto_committer.config import (
     DEFAULT_CONFIG, load_config, save_config,
-    load_repos, save_repos, add_repo, remove_repo,
+    load_repos, add_repo, remove_repo,
     CONFIG_FILE, REPOS_FILE,
 )
 from auto_committer.scanner import find_git_repos, get_repo_info
@@ -31,7 +31,8 @@ def handle_scan(cfg):
     clear_screen()
     print(f"\n  {C.CYAN}{C.BOLD}🔍 SCAN GIT REPOSITORIES{C.RESET}\n")
 
-    scan_path = prompt("Đường dẫn quét", cfg.get("scan_path", "D:\\"))
+    default_path = cfg.get("scan_path", "D:\\")
+    scan_path = prompt("Đường dẫn quét", default_path)
     depth = int(prompt("Độ sâu quét", str(cfg.get("max_depth", 2))))
 
     print(f"\n  {C.YELLOW}⏳ Đang quét {scan_path} ...{C.RESET}\n")
@@ -260,12 +261,14 @@ def handle_settings(cfg):
         clear_screen()
         print(f"\n  {C.CYAN}{C.BOLD}⚙️  CÀI ĐẶT{C.RESET}\n")
 
-        print(f"  {C.YELLOW}[1]{C.RESET} Scan path:          {C.GREEN}{cfg.get('scan_path', 'D:\\')}{C.RESET}")
+        scan_path_val = cfg.get('scan_path', 'D:\\')
+        print(f"  {C.YELLOW}[1]{C.RESET} Scan path:          {C.GREEN}{scan_path_val}{C.RESET}")
         print(f"  {C.YELLOW}[2]{C.RESET} Max depth:           {C.GREEN}{cfg.get('max_depth', 2)}{C.RESET}")
         print(f"  {C.YELLOW}[3]{C.RESET} Min commits/day:     {C.GREEN}{cfg.get('min_commits_per_day', 1)}{C.RESET}")
         print(f"  {C.YELLOW}[4]{C.RESET} Max commits/day:     {C.GREEN}{cfg.get('max_commits_per_day', 3)}{C.RESET}")
         print(f"  {C.YELLOW}[5]{C.RESET} Auto push:           {C.GREEN}{cfg.get('auto_push', False)}{C.RESET}")
-        print(f"  {C.YELLOW}[6]{C.RESET} Commit messages:     {C.GREEN}{len(cfg.get('commit_messages', []))} mẫu{C.RESET}")
+        msg_count = len(cfg.get('commit_messages', []))
+        print(f"  {C.YELLOW}[6]{C.RESET} Commit messages:     {C.GREEN}{msg_count} mẫu{C.RESET}")
         print(f"\n  {C.YELLOW}[s]{C.RESET} 💾 Lưu cài đặt")
         print(f"  {C.YELLOW}[0]{C.RESET} ↩️  Quay lại")
 
@@ -274,7 +277,8 @@ def handle_settings(cfg):
         if choice == "0":
             break
         elif choice == "1":
-            cfg["scan_path"] = prompt("Scan path mới", cfg.get("scan_path", "D:\\"))
+            default_sp = cfg.get("scan_path", "D:\\")
+            cfg["scan_path"] = prompt("Scan path mới", default_sp)
         elif choice == "2":
             cfg["max_depth"] = int(prompt("Max depth mới", str(cfg.get("max_depth", 2))))
         elif choice == "3":

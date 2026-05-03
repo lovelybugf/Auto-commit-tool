@@ -1,5 +1,4 @@
 """Unit tests for the scanner module."""
-import os
 import tempfile
 
 from auto_committer.scanner import find_git_repos, get_repo_info

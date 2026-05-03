@@ -71,7 +71,7 @@ def load_repos():
         return []
     with open(REPOS_FILE, "r", encoding="utf-8") as f:
         lines = f.read().strip().splitlines()
-    return [l.strip() for l in lines if l.strip() and not l.strip().startswith("#")]
+    return [line.strip() for line in lines if line.strip() and not line.strip().startswith("#")]
 
 
 def save_repos(repos):
