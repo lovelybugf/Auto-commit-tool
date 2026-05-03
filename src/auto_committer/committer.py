@@ -92,8 +92,8 @@ def create_commit(repo_path, commit_date, message=None, readme_file="README.md",
 
 
 def create_commits_for_date_range(repo_path, start_date, end_date,
-                                   min_per_day=1, max_per_day=1,
-                                   readme_file="README.md", messages=None):
+                                  min_per_day=1, max_per_day=1,
+                                  readme_file="README.md", messages=None):
     """Create commits for each day in a date range.
 
     Args:
