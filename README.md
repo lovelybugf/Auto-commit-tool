@@ -201,3 +201,15 @@ Quy chuẩn commit: [COMMIT_CONVENTION.md](./COMMIT_CONVENTION.md)
 ## 📄 License
 
 [MIT License](./LICENSE) — Tự do sử dụng và chỉnh sửa.
+
+<!-- auto-committer-log -->
+
+---
+
+## 📅 Activity Log
+
+| Date | Status |
+|------|--------|
+| 2026-05-17 13:01:31 | ✅ Updated |
+
+> 🤖 Auto-maintained by Git Auto Committer
