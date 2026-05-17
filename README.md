@@ -55,7 +55,17 @@ python -m auto_committer --version
 
 ## 📖 Sử Dụng
 
-### Interactive Mode (khuyên dùng)
+### Auto Mode (Không cần tương tác)
+
+Chạy tool hoàn toàn tự động (quét repos, thêm mới, tạo commit) mà không cần xác nhận:
+
+```bash
+python -m auto_committer --auto
+# Hoặc
+auto-committer -a
+```
+
+### Interactive Mode (Menu tương tác)
 
 ```bash
 python -m auto_committer
