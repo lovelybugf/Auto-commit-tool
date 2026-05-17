@@ -308,12 +308,82 @@ def handle_settings(cfg):
 # MAIN ENTRY POINT
 # ============================================================
 
+def auto_run(cfg):
+    """Run fully automatically without interactive prompts."""
+    print(f"\n  {C.CYAN}{C.BOLD}🚀 CHẠY TỰ ĐỘNG (AUTO MODE){C.RESET}\n")
+    
+    # 1. Scan and update repos
+    scan_path = cfg.get("scan_path", "D:\\")
+    depth = cfg.get("max_depth", 2)
+    print(f"  {C.YELLOW}⏳ Đang quét tìm repos tại {scan_path} ...{C.RESET}")
+    
+    repos = find_git_repos(scan_path, max_depth=depth, exclude_dirs=cfg.get("exclude_dirs"))
+    new_added = 0
+    for repo in repos:
+        if add_repo(repo):
+            new_added += 1
+            
+    print(f"  {C.GREEN}✅ Đã tìm thấy {len(repos)} repos (Thêm mới {new_added}).{C.RESET}\n")
+    
+    # 2. Commit for all repos in repos.txt
+    saved_repos = load_repos()
+    if not saved_repos:
+        print_warn("Không có repo nào để commit.")
+        return 0
+        
+    start = datetime.now() - timedelta(days=1)
+    end = datetime.now()
+    
+    min_c = cfg.get("min_commits_per_day", 1)
+    max_c = cfg.get("max_commits_per_day", 3)
+    auto_push = cfg.get("auto_push", False)
+    messages = cfg.get("commit_messages", DEFAULT_CONFIG["commit_messages"])
+    
+    print(f"  {C.YELLOW}⏳ Đang tiến hành tạo commit cho {len(saved_repos)} repos...{C.RESET}")
+    
+    total_success = 0
+    total_fail = 0
+    
+    for repo in saved_repos:
+        if not os.path.isdir(repo):
+            continue
+            
+        info = get_repo_info(repo)
+        readme_file = info.get("readme_file", "README.md")
+        
+        results = create_commits_for_date_range(
+            repo, start, end,
+            min_per_day=min_c, max_per_day=max_c,
+            readme_file=readme_file, messages=messages
+        )
+        
+        success = sum(1 for r in results if r["success"])
+        fail = len(results) - success
+        total_success += success
+        total_fail += fail
+        
+        if auto_push and info.get("remote") and success > 0:
+            push_repo(repo)
+            
+    print_separator()
+    print(f"  {C.BOLD}{C.GREEN}📊 KẾT QUẢ AUTO RUN:{C.RESET}")
+    print(f"    ✅ Tổng commits thành công: {C.GREEN}{total_success}{C.RESET}")
+    print(f"    ❌ Tổng bỏ qua/lỗi:        {C.RED}{total_fail}{C.RESET}")
+    print(f"\n  {C.CYAN}🎉 Hoàn tất!{C.RESET}\n")
+    return 0
+
 def main():
     """Main interactive loop."""
-    # Handle --version flag
-    if len(sys.argv) > 1 and sys.argv[1] in ("--version", "-V"):
-        print(f"Git Auto Committer v{__version__}")
-        return 0
+    # Handle flags
+    if len(sys.argv) > 1:
+        flag = sys.argv[1].lower()
+        if flag in ("--version", "-v"):
+            print(f"Git Auto Committer v{__version__}")
+            return 0
+        elif flag in ("--auto", "-a"):
+            setup_encoding()
+            cfg = load_config()
+            return auto_run(cfg)
 
     setup_encoding()
     cfg = load_config()
