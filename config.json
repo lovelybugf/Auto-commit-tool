@@ -22,7 +22,7 @@
         "📖 Enhance README content"
     ],
     "readme_update_template": "\n---\n\n> 🕐 Last updated: {date} | Auto-maintained by Git Auto Committer\n",
-    "auto_push": false,
+    "auto_push": true,
     "min_commits_per_day": 1,
     "max_commits_per_day": 3,
     "time_range_start": "09:00",
